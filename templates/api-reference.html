@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="api-reference">
-  <redoc spec-url="/openapi/mother-api.json"></redoc>
+  <redoc spec-url="{{ get_url(path='openapi/mother-api.json') }}"></redoc>
 </div>
 
 <style>

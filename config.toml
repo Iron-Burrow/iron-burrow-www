@@ -1,4 +1,4 @@
-base_url = "https://www.ironburrow.com"
+base_url = "https://iron-burrow-www.jose-skedar.workers.dev"
 title = "Iron Burrow — Compliance Evidence Layer for Crypto Teams"
 description = "Source-aware, deterministic compliance evidence for crypto operators, compliance teams, and internal tools."
 compile_sass = true

@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://api.ironburrow.com"
+      "url": "/"
     }
   ],
   "tags": [

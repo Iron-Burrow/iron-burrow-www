@@ -4,7 +4,7 @@ Public website for Iron Burrow.
 
 Iron Burrow is a compliance evidence layer for crypto teams. This site is built with Zola and kept intentionally simple.
 
-There is no npm, npx, Node, `package.json`, JavaScript framework, Swagger UI, Redoc, or analytics setup in this repo.
+There is no npm, Node framework, `package.json`, Swagger UI, or analytics setup in this repo. The API reference page loads Redoc from its CDN.
 
 ## Requirements
 
@@ -19,10 +19,16 @@ zola serve
 ## Production build
 
 ```bash
-zola build
+./scripts/build-zola.sh
 ```
 
 Zola writes the generated site to `public/`.
+
+Set `SITE_URL` to override the generated site URL:
+
+```bash
+SITE_URL="https://iron-burrow-www.jose-skedar.workers.dev" ./scripts/build-zola.sh
+```
 
 To confirm the public API artifact is present after a build:
 
@@ -34,7 +40,7 @@ test -f public/openapi/mother-api.json
 
 `static/openapi/mother-api.json` is the public Mother API artifact.
 
-`zola build` copies it to:
+The Zola build copies it to:
 
 ```txt
 public/openapi/mother-api.json
@@ -42,13 +48,11 @@ public/openapi/mother-api.json
 
 Today the artifact is maintained manually from the Mother API source repository. Later it may be generated automatically from the Mother API repository.
 
-## Cloudflare Pages
+## Cloudflare Workers
 
-Expected Cloudflare Pages settings:
+Expected Cloudflare Workers settings:
 
 ```txt
-Framework preset: Zola
-Build command: zola build
-Build output directory: public
-Production branch: master
+Build command: ./scripts/build-zola.sh
+Deploy command: npx wrangler deploy --assets ./public
 ```
