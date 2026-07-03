@@ -1,0 +1,8 @@
+name = "iron-burrow-www"
+compatibility_date = "2026-07-03"
+
+[build]
+command = "./scripts/build-zola.sh"
+
+[assets]
+directory = "./public"
