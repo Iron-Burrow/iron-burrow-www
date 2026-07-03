@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page is defined %}{{ page.title }} | {{ config.title }}{% elif section is defined %}{{ section.title }} | {{ config.title }}{% else %}{{ config.title }}{% endif %}</title>
+    <meta name="description" content="{% if page is defined and page.description %}{{ page.description }}{% elif section is defined and section.description %}{{ section.description }}{% else %}{{ config.description }}{% endif %}">
+    <link rel="stylesheet" href="{{ get_url(path='style.css') }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="{{ get_url(path='/') }}" aria-label="Iron Burrow home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Iron Burrow</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="{{ get_url(path='/api/') }}">API</a>
+          <a href="{{ get_url(path='/founder/') }}">Founder</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      {% block content %}{% endblock content %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>Iron Burrow is founder-led and currently in private Beta.</p>
+        <a href="{{ get_url(path='/api/') }}">API notes</a>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+base_url = "https://ironburrow.com"
+title = "Iron Burrow"
+description = "Compliance evidence layer for crypto teams."
+compile_sass = true
+minify_html = true
+generate_feeds = false
+build_search_index = false
+
+[extra]
+author = "José María Sosa"

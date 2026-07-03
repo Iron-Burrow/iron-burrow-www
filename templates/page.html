@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="page">
+  <div class="container page-inner">
+    <header class="page-header">
+      <p class="eyebrow">Iron Burrow</p>
+      <h1>{{ page.title }}</h1>
+      {% if page.description %}
+        <p class="lede">{{ page.description }}</p>
+      {% endif %}
+    </header>
+    <div class="page-content">
+      {{ page.content | safe }}
+    </div>
+  </div>
+</article>
+{% endblock content %}
