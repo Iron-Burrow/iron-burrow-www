@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="api-reference">
+  <redoc spec-url="/openapi/mother-api.json"></redoc>
+</div>
+
+<style>
+  .api-reference {
+    min-height: calc(100vh - 4.25rem);
+    background: #ffffff;
+    color: #1f2933;
+  }
+</style>
+<script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+{% endblock content %}

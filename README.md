@@ -1,30 +1,46 @@
 # Iron Burrow WWW
 
-Iron Burrow is a small static marketing site for the Iron Burrow private Beta.
+Public website for Iron Burrow.
 
-**Compliance evidence layer for crypto teams.**
+Iron Burrow is a compliance evidence layer for crypto teams. This site is built with Zola and kept intentionally simple.
 
-The site is built with Zola and intentionally avoids npm, npx, Node, `package.json`, JavaScript build tooling, and frontend framework dependencies.
+There is no npm, npx, Node, `package.json`, JavaScript framework, Swagger UI, Redoc, or analytics setup in this repo.
 
 ## Requirements
 
-- Zola
+- Zola installed locally
 
 ## Local development
-
-Run the local development server:
 
 ```bash
 zola serve
 ```
 
-Build the static site:
+## Production build
 
 ```bash
 zola build
 ```
 
 Zola writes the generated site to `public/`.
+
+To confirm the public API artifact is present after a build:
+
+```bash
+test -f public/openapi/mother-api.json
+```
+
+## OpenAPI artifact flow
+
+`static/openapi/mother-api.json` is the public Mother API artifact.
+
+`zola build` copies it to:
+
+```txt
+public/openapi/mother-api.json
+```
+
+Today the artifact is maintained manually from the Mother API source repository. Later it may be generated automatically from the Mother API repository.
 
 ## Cloudflare Pages
 
@@ -34,34 +50,5 @@ Expected Cloudflare Pages settings:
 Framework preset: Zola
 Build command: zola build
 Build output directory: public
+Production branch: master
 ```
-
-Optional preview-safe build command:
-
-```bash
-if [ "$CF_PAGES_BRANCH" = "main" ]; then zola build; else zola build --base-url "$CF_PAGES_URL"; fi
-```
-
-## No npm constraint
-
-This repository intentionally does not use:
-
-- npm
-- npx
-- Node
-- `package.json`
-- npm scripts
-- JavaScript build tooling
-- Astro, React, Docusaurus, Vite, or Tailwind
-
-JavaScript may be added later only as a browser-side island for OpenAPI documentation rendering. It is not part of this foundation.
-
-## Future OpenAPI integration
-
-The generated Mother API OpenAPI artifact should eventually live at:
-
-```txt
-/openapi/mother-api.json
-```
-
-The `/api/` page currently includes only a clean placeholder. No Scalar, Redoc, Swagger UI, CDN script, or OpenAPI renderer is integrated yet.

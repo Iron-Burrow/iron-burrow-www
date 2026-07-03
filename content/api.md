@@ -1,24 +1,34 @@
 +++
-title = "API Notes"
-description = "Private Beta API notes for Iron Burrow."
+title = "Mother API"
+description = "Private beta API docs for Iron Burrow Mother API."
 +++
 
-Iron Burrow exposes a private Beta API for selected on-chain intelligence workflows. The current surface is intentionally small so the system can prioritize reliability, evidence quality, and clear operational boundaries.
+Iron Burrow Mother API is currently in private beta. It provides a small supported surface for source-aware compliance evidence in crypto workflows.
 
-## Current Beta focus
+The beta API may evolve before a future stable release. Today, the supported surface is intentionally narrow so Iron Burrow can prioritize evidence quality, deterministic behavior, and clear operational boundaries.
 
-- Wallet balance inspection across supported networks
+## Current beta capabilities
+
+- Bulk balances
+- Single-account balances
 - ERC-20 transfer search
-- Source-aware responses designed for review, reporting, and operational workflows
 
-## OpenAPI reference
+## OpenAPI artifact
 
-OpenAPI reference coming soon.
+Read the rendered API reference in the browser:
 
-The generated Mother API OpenAPI artifact should eventually live at:
+[View rendered API reference](/api/reference/)
 
-```txt
-/openapi/mother-api.json
-```
+Or inspect the current OpenAPI JSON directly:
 
-No OpenAPI renderer, CDN script, or browser-side documentation island is integrated yet.
+[/openapi/mother-api.json](/openapi/mother-api.json)
+
+## Access
+
+API keys are granted manually by request during private beta.
+
+Developers building compliance workflows can request a dev API key after reviewing the OpenAPI artifact. Business and compliance teams can contact Iron Burrow for product and beta access questions.
+
+[Request a dev API key](/founder/)
+
+[Contact Iron Burrow](/founder/)

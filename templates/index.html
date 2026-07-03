@@ -4,12 +4,12 @@
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">Iron Burrow</p>
-      <h1>Compliance evidence layer for crypto teams</h1>
-      <p class="lede">Iron Burrow helps crypto operators, compliance teams, and internal tools inspect on-chain activity with source-aware, deterministic evidence.</p>
+      <p class="eyebrow">Compliance evidence layer for crypto teams</p>
+      <h1>Source-aware evidence for on-chain activity.</h1>
+      <p class="lede">Iron Burrow helps crypto operators, compliance teams, and internal tools inspect balances and ERC-20 transfers with deterministic, source-aware evidence.</p>
       <div class="hero-actions" aria-label="Primary actions">
-        <a class="button button-primary" href="#private-beta">Request private Beta access</a>
-        <a class="button button-secondary" href="{{ get_url(path='/api/') }}">View API notes</a>
+        <a class="button button-primary" href="{{ get_url(path='/founder/') }}">Talk to Iron Burrow</a>
+        <a class="button button-secondary" href="{{ get_url(path='/api/') }}">View API docs</a>
       </div>
     </div>
     <aside class="evidence-panel" aria-label="Evidence summary">
@@ -17,15 +17,15 @@
       <dl>
         <div>
           <dt>Traceable</dt>
-          <dd>Responses keep source context close to the result.</dd>
+          <dd>Evidence keeps source context close to the result.</dd>
         </div>
         <div>
           <dt>Reproducible</dt>
-          <dd>Workflows are shaped for deterministic review.</dd>
+          <dd>Workflows are shaped for deterministic inspection.</dd>
         </div>
         <div>
           <dt>Operational</dt>
-          <dd>Built for compliance and internal tooling use cases.</dd>
+          <dd>Built for compliance teams, operators, and internal tools.</dd>
         </div>
       </dl>
     </aside>
@@ -35,12 +35,12 @@
 <section class="section">
   <div class="container split">
     <div>
-      <p class="eyebrow">Positioning</p>
-      <h2>Not another dashboard. Not a generic data provider.</h2>
+      <p class="eyebrow">What Iron Burrow provides</p>
+      <h2>Evidence boundaries for crypto workflows.</h2>
     </div>
     <div class="prose">
-      <p>Iron Burrow is built for cases where the answer needs to be traceable, reproducible, and useful for compliance workflows.</p>
-      <p>Instead of hiding operational details behind screenshots or opaque vendor output, the product moves toward source-aware evidence that can be inspected by technical and compliance teams.</p>
+      <p>Iron Burrow is built for cases where an answer needs to be traceable, reproducible, and useful for compliance review.</p>
+      <p>It is not positioned as a generic RPC provider or broad data vendor. The current work focuses on deterministic, source-aware evidence that business, compliance, and technical teams can inspect together.</p>
     </div>
   </div>
 </section>
@@ -48,21 +48,21 @@
 <section class="section section-muted">
   <div class="container">
     <div class="section-heading">
-      <p class="eyebrow">What it does today</p>
-      <h2>A deliberately small private Beta surface</h2>
+      <p class="eyebrow">Current beta API</p>
+      <h2>A deliberately small private beta surface.</h2>
     </div>
     <div class="card-grid">
       <article class="card">
-        <h3>Wallet balance inspection</h3>
-        <p>Inspect wallet balances across supported networks with evidence-oriented response structure.</p>
+        <h3>Bulk balances</h3>
+        <p>Inspect network-scoped wallet balances across supported assets with evidence-oriented responses.</p>
       </article>
       <article class="card">
         <h3>ERC-20 transfer search</h3>
-        <p>Search ERC-20 transfer activity for selected on-chain intelligence workflows.</p>
+        <p>Search bounded ERC-20 transfer activity for selected on-chain review workflows.</p>
       </article>
       <article class="card">
-        <h3>Source-aware responses</h3>
-        <p>Return data in a form designed for review, reporting, and operational workflows.</p>
+        <h3>Supported and evolving</h3>
+        <p>The private beta surface is intentionally narrow and may evolve before a future stable release.</p>
       </article>
     </div>
   </div>
@@ -71,12 +71,12 @@
 <section class="section">
   <div class="container split">
     <div>
-      <p class="eyebrow">Why it exists</p>
-      <h2>Compliance review should be inspectable.</h2>
+      <p class="eyebrow">Who it is for</p>
+      <h2>Teams that need clearer on-chain evidence.</h2>
     </div>
     <div class="prose">
-      <p>Crypto compliance work often depends on fragmented data, manual review, screenshots, RPC calls, spreadsheets, and vendor black boxes.</p>
-      <p>Iron Burrow exists to make that process more inspectable, with clearer answers about source, freshness, reproducibility, and operational suitability.</p>
+      <p>Iron Burrow is for compliance teams, legal and operations groups, crypto operators, and internal tools that need clearer boundaries around on-chain evidence.</p>
+      <p>Developers building compliance workflows can use the Mother API private beta to request deterministic balance and transfer evidence, then bring that evidence into internal systems.</p>
     </div>
   </div>
 </section>
@@ -84,14 +84,14 @@
 <section class="section section-muted">
   <div class="container">
     <div class="section-heading">
-      <p class="eyebrow">Evidence questions</p>
-      <h2>Every result should make review easier.</h2>
+      <p class="eyebrow">Review questions</p>
+      <h2>Every result should make inspection easier.</h2>
     </div>
     <div class="question-grid">
       <div class="question-card">Where did this data come from?</div>
       <div class="question-card">Can we reproduce it?</div>
       <div class="question-card">Is it fresh enough to trust?</div>
-      <div class="question-card">Is it suitable for a compliance or operational decision?</div>
+      <div class="question-card">Is the evidence boundary clear enough to use?</div>
     </div>
   </div>
 </section>
@@ -99,23 +99,23 @@
 <section class="section">
   <div class="container split">
     <div>
-      <p class="eyebrow">Built by José María Sosa</p>
-      <h2>Founder-led infrastructure work.</h2>
+      <p class="eyebrow">Private beta</p>
+      <h2>For teams that need focused crypto compliance infrastructure.</h2>
     </div>
     <div class="prose">
-      <p>Iron Burrow is built by José María Sosa, a backend engineer focused on crypto infrastructure, Rust systems, deterministic data pipelines, and source-aware on-chain intelligence.</p>
-      <p>The project is currently founder-led and in private Beta.</p>
-      <p><a class="text-link" href="{{ get_url(path='/founder/') }}">Read the founder note</a></p>
+      <p>Iron Burrow is currently working with early users who need source-aware, deterministic evidence for on-chain review and internal workflows.</p>
+      <p>Business and compliance readers can contact Iron Burrow directly. Developers can review the API docs and request a dev API key.</p>
+      <p><a class="text-link" href="{{ get_url(path='/api/') }}">View the API docs</a></p>
     </div>
   </div>
 </section>
 
 <section class="section beta-cta" id="private-beta">
   <div class="container cta-panel">
-    <p class="eyebrow">Private Beta</p>
-    <h2>For teams that need focused crypto compliance infrastructure.</h2>
-    <p>Iron Burrow is currently working with early users who need source-aware, deterministic evidence for on-chain review and internal workflows.</p>
-    <a class="button button-primary" href="{{ get_url(path='/founder/') }}">Contact José María Sosa</a>
+    <p class="eyebrow">Contact</p>
+    <h2>Talk to Iron Burrow.</h2>
+    <p>For business, compliance, and developer access questions, contact the founder-led team. API keys are granted manually during private beta.</p>
+    <a class="button button-primary" href="{{ get_url(path='/founder/') }}">Contact Iron Burrow</a>
   </div>
 </section>
 {% endblock content %}

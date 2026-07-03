@@ -1,0 +1,1298 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Iron Burrow Mother API",
+    "version": "0.2.0-beta",
+    "description": "Private Beta API for source-aware compliance evidence. Mother API exposes a deliberately small surface for deterministic inspection of balances and ERC-20 transfers. The beta API may evolve before a future stable release."
+  },
+  "servers": [
+    {
+      "url": "https://api.ironburrow.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "balances",
+      "description": "Latest network-scoped EVM balance evidence."
+    },
+    {
+      "name": "erc20-transfers",
+      "description": "Bounded ERC-20 transfer search evidence."
+    }
+  ],
+  "paths": {
+    "/v1/balances": {
+      "post": {
+        "tags": [
+          "balances"
+        ],
+        "summary": "Resolve one latest balance snapshot",
+        "description": "Resolves one latest EVM balance snapshot for a canonical network_slug and explicit asset slugs. Requests use network_slug, never chain or chain_id. Supported quote_currency values are USD, MXN, USDC, and BTC.",
+        "security": [
+          {
+            "BetaApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SingleBalanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Single-account balance snapshot. Provider failures for supported balance items remain item-level errors inside this response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleBalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadBalanceRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
+    "/v1/balances/bulk": {
+      "post": {
+        "tags": [
+          "balances"
+        ],
+        "summary": "Resolve latest balance snapshots in bulk",
+        "description": "Resolves latest EVM balance snapshots for explicit canonical network_slug accounts and asset slugs. Requests use network_slug, never chain or chain_id. Supported quote_currency values are USD, MXN, USDC, and BTC. Bulk accepts 1 to 50 accounts, up to 20 assets, and up to 1,000 account-asset resolution items.",
+        "security": [
+          {
+            "BetaApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkBalanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bulk balance snapshot response. Provider failures for supported balance items remain per-account item-level errors inside this response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkBalanceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadBalanceRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
+    "/v1/erc20-transfers/search": {
+      "post": {
+        "tags": [
+          "erc20-transfers"
+        ],
+        "summary": "Search ERC-20 transfers",
+        "description": "Searches bounded ERC-20 Transfer logs for one EVM address. Current private beta transfer search supports eth-mainnet and may use optional catalog asset slugs or explicit token contract addresses.",
+        "security": [
+          {
+            "BetaApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Erc20TransferSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ERC-20 transfer search response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erc20TransferSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or semantically invalid transfer search request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Requested network or asset is unsupported or unknown for transfer search.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Transfer search request exceeds public validation limits.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "502": {
+            "description": "Upstream transfer provider failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          },
+          "504": {
+            "description": "Transfer extraction or upstream provider timed out.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BetaApiKeyAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API key",
+        "description": "Private Beta API key presented as `Authorization: Bearer <api_key>`."
+      }
+    },
+    "responses": {
+      "BadBalanceRequest": {
+        "description": "Malformed, semantically invalid, or oversized balance request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "The protected Beta route request lacks a valid active API key.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "The valid Beta API key exceeded a configured request limit.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Mother API detected an internally inconsistent state.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "ServiceUnavailable": {
+        "description": "Required storage, catalog, extraction, or authentication infrastructure is temporarily unavailable.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "SingleBalanceRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "as_of",
+          "account",
+          "quote_currency",
+          "assets"
+        ],
+        "properties": {
+          "as_of": {
+            "$ref": "#/components/schemas/BalanceAsOfRequest"
+          },
+          "account": {
+            "$ref": "#/components/schemas/BalanceAccountRequest"
+          },
+          "quote_currency": {
+            "$ref": "#/components/schemas/QuoteCurrency"
+          },
+          "assets": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/BalanceAssetRequest"
+            }
+          }
+        }
+      },
+      "BulkBalanceRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "as_of",
+          "accounts",
+          "quote_currency",
+          "assets"
+        ],
+        "properties": {
+          "as_of": {
+            "$ref": "#/components/schemas/BalanceAsOfRequest"
+          },
+          "accounts": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/components/schemas/BalanceAccountRequest"
+            }
+          },
+          "quote_currency": {
+            "$ref": "#/components/schemas/QuoteCurrency"
+          },
+          "assets": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/BalanceAssetRequest"
+            }
+          }
+        }
+      },
+      "BalanceAsOfRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "latest"
+          }
+        }
+      },
+      "BalanceAccountRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "network_slug",
+          "address"
+        ],
+        "properties": {
+          "network_slug": {
+            "type": "string",
+            "description": "Canonical Mother API network slug."
+          },
+          "address": {
+            "$ref": "#/components/schemas/EvmAddress"
+          },
+          "client_ref": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Opaque caller reference echoed unchanged."
+          }
+        }
+      },
+      "BalanceAssetRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "asset_slug"
+        ],
+        "properties": {
+          "asset_slug": {
+            "type": "string",
+            "description": "Network-agnostic global asset slug."
+          }
+        }
+      },
+      "QuoteCurrency": {
+        "type": "string",
+        "enum": [
+          "USD",
+          "MXN",
+          "USDC",
+          "BTC"
+        ]
+      },
+      "SingleBalanceResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok",
+          "type",
+          "status",
+          "as_of",
+          "quote_currency",
+          "account",
+          "evidence",
+          "positions",
+          "skipped",
+          "errors"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "const": true
+          },
+          "type": {
+            "type": "string",
+            "const": "balances"
+          },
+          "status": {
+            "$ref": "#/components/schemas/BalanceResponseStatus"
+          },
+          "as_of": {
+            "$ref": "#/components/schemas/SingleAsOfPayload"
+          },
+          "quote_currency": {
+            "type": "string"
+          },
+          "account": {
+            "$ref": "#/components/schemas/BalanceAccountIdentity"
+          },
+          "evidence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BalanceEvidence"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "positions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalancePosition"
+            }
+          },
+          "skipped": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceSkipped"
+            }
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceItemError"
+            }
+          }
+        }
+      },
+      "BulkBalanceResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok",
+          "type",
+          "status",
+          "as_of",
+          "quote_currency",
+          "summary",
+          "accounts",
+          "errors"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "const": true
+          },
+          "type": {
+            "type": "string",
+            "const": "balances_bulk"
+          },
+          "status": {
+            "$ref": "#/components/schemas/BalanceResponseStatus"
+          },
+          "as_of": {
+            "$ref": "#/components/schemas/BulkAsOfPayload"
+          },
+          "quote_currency": {
+            "type": "string"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/BalanceSummary"
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceAccount"
+            }
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceItemError"
+            }
+          }
+        }
+      },
+      "BalanceResponseStatus": {
+        "type": "string",
+        "enum": [
+          "complete",
+          "partial",
+          "failed"
+        ]
+      },
+      "SingleAsOfPayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "observed_at"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "latest"
+          },
+          "observed_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "BulkAsOfPayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "latest"
+          }
+        }
+      },
+      "BalanceSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "requested_accounts",
+          "requested_assets",
+          "requested_resolution_items",
+          "positions_returned",
+          "skipped_items",
+          "failed_items"
+        ],
+        "properties": {
+          "requested_accounts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "requested_assets": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "requested_resolution_items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "positions_returned": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "skipped_items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "failed_items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "BalanceAccount": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "account",
+          "evidence",
+          "positions",
+          "skipped",
+          "errors"
+        ],
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/BalanceResponseStatus"
+          },
+          "account": {
+            "$ref": "#/components/schemas/BalanceAccountIdentity"
+          },
+          "evidence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BalanceEvidence"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "positions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalancePosition"
+            }
+          },
+          "skipped": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceSkipped"
+            }
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceItemError"
+            }
+          }
+        }
+      },
+      "BalanceAccountIdentity": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "network_slug",
+          "address",
+          "client_ref"
+        ],
+        "properties": {
+          "network_slug": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/EvmAddress"
+          },
+          "client_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "BalanceEvidence": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source",
+          "network_slug",
+          "block",
+          "observed_at"
+        ],
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "network_slug": {
+            "type": "string"
+          },
+          "block": {
+            "$ref": "#/components/schemas/BalanceBlock"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "BalanceBlock": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "number",
+          "hash"
+        ],
+        "properties": {
+          "number": {
+            "type": "string"
+          },
+          "hash": {
+            "type": "string"
+          }
+        }
+      },
+      "BalancePosition": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "network_slug",
+          "asset_slug",
+          "symbol",
+          "balance",
+          "quote"
+        ],
+        "properties": {
+          "network_slug": {
+            "type": "string"
+          },
+          "asset_slug": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "balance": {
+            "$ref": "#/components/schemas/BalanceAmount"
+          },
+          "quote": {
+            "$ref": "#/components/schemas/BalanceQuote"
+          }
+        }
+      },
+      "BalanceAmount": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "raw_amount",
+          "amount",
+          "decimals"
+        ],
+        "properties": {
+          "raw_amount": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "string"
+          },
+          "decimals": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          }
+        }
+      },
+      "BalanceQuote": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "currency",
+          "unit_price",
+          "value",
+          "price_as_of"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "unavailable",
+              "unsupported"
+            ]
+          },
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "unit_price": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "value": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "price_as_of": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "BalanceSkipped": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "network_slug",
+          "asset_slug",
+          "reason"
+        ],
+        "properties": {
+          "network_slug": {
+            "type": "string"
+          },
+          "asset_slug": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
+      "BalanceItemError": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "network_slug",
+          "asset_slug",
+          "code",
+          "message"
+        ],
+        "properties": {
+          "network_slug": {
+            "type": "string"
+          },
+          "asset_slug": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Erc20TransferSearchRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "network_slug",
+          "address",
+          "direction",
+          "window"
+        ],
+        "properties": {
+          "network_slug": {
+            "type": "string",
+            "const": "eth-mainnet"
+          },
+          "address": {
+            "$ref": "#/components/schemas/EvmAddress"
+          },
+          "direction": {
+            "$ref": "#/components/schemas/TransferDirection"
+          },
+          "tokens": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TokenFilter"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "window": {
+            "$ref": "#/components/schemas/OnchainWindow"
+          }
+        }
+      },
+      "Erc20TransferSearchResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok",
+          "type",
+          "network_slug",
+          "address",
+          "direction",
+          "window",
+          "token_filters",
+          "transfers",
+          "limits"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "const": true
+          },
+          "type": {
+            "type": "string",
+            "const": "erc20_transfer_search"
+          },
+          "network_slug": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/EvmAddress"
+          },
+          "direction": {
+            "$ref": "#/components/schemas/TransferDirection"
+          },
+          "window": {
+            "$ref": "#/components/schemas/OnchainWindow"
+          },
+          "token_filters": {
+            "$ref": "#/components/schemas/TokenFilterResolution"
+          },
+          "transfers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Erc20TransferRow"
+            }
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Erc20TransferSearchLimits"
+          }
+        }
+      },
+      "TransferDirection": {
+        "type": "string",
+        "enum": [
+          "any",
+          "from",
+          "to"
+        ]
+      },
+      "TokenFilter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "asset_slugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contract_addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EvmAddress"
+            }
+          }
+        }
+      },
+      "TokenFilterResolution": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "requested",
+          "resolved_contract_addresses"
+        ],
+        "properties": {
+          "requested": {
+            "$ref": "#/components/schemas/TokenFilter"
+          },
+          "resolved_contract_addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResolvedTokenFilter"
+            }
+          }
+        }
+      },
+      "ResolvedTokenFilter": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "contract_address",
+          "asset_slug",
+          "symbol",
+          "decimals",
+          "source"
+        ],
+        "properties": {
+          "contract_address": {
+            "$ref": "#/components/schemas/EvmAddress"
+          },
+          "asset_slug": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "symbol": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decimals": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 255
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "asset_slug",
+              "contract_address"
+            ]
+          }
+        }
+      },
+      "OnchainWindow": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/BlockWindow"
+          },
+          {
+            "$ref": "#/components/schemas/TimestampWindow"
+          },
+          {
+            "$ref": "#/components/schemas/LookbackWindow"
+          }
+        ]
+      },
+      "BlockWindow": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "from_block",
+          "to_block"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "block"
+          },
+          "from_block": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "to_block": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "TimestampWindow": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "from_timestamp",
+          "to_timestamp"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "timestamp"
+          },
+          "from_timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "to_timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LookbackWindow": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "lookback_seconds",
+          "to"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "lookback"
+          },
+          "lookback_seconds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 86400
+          },
+          "to": {
+            "type": "string",
+            "const": "latest"
+          }
+        }
+      },
+      "Erc20TransferRow": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "block_number",
+          "tx_hash",
+          "log_index",
+          "token",
+          "from",
+          "to",
+          "amount",
+          "direction"
+        ],
+        "properties": {
+          "block_number": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "tx_hash": {
+            "type": "string"
+          },
+          "log_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "token": {
+            "$ref": "#/components/schemas/Erc20TransferToken"
+          },
+          "from": {
+            "$ref": "#/components/schemas/EvmAddress"
+          },
+          "to": {
+            "$ref": "#/components/schemas/EvmAddress"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Erc20TransferAmount"
+          },
+          "direction": {
+            "$ref": "#/components/schemas/TransferDirection"
+          }
+        }
+      },
+      "Erc20TransferToken": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "contract_address",
+          "asset_slug",
+          "symbol",
+          "decimals"
+        ],
+        "properties": {
+          "contract_address": {
+            "$ref": "#/components/schemas/EvmAddress"
+          },
+          "asset_slug": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "symbol": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decimals": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 255
+          }
+        }
+      },
+      "Erc20TransferAmount": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "raw",
+          "decimal"
+        ],
+        "properties": {
+          "raw": {
+            "type": "string"
+          },
+          "decimal": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "Erc20TransferSearchLimits": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "max_rows",
+          "truncated"
+        ],
+        "properties": {
+          "max_rows": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 5000
+          },
+          "truncated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok",
+          "error"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "const": false
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        }
+      },
+      "ErrorBody": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "asset_contract_mapping_unavailable",
+              "asset_network_map_unavailable",
+              "asset_not_available_on_network",
+              "asset_not_erc20_on_network",
+              "asset_not_found",
+              "database_unavailable",
+              "duplicate_account",
+              "duplicate_asset",
+              "empty_accounts",
+              "empty_assets",
+              "extraction_timeout",
+              "extraction_unavailable",
+              "internal_error",
+              "invalid_account",
+              "invalid_address",
+              "invalid_asset_slug",
+              "invalid_contract_address",
+              "invalid_direction",
+              "invalid_json",
+              "invalid_request",
+              "invalid_window",
+              "rate_limited",
+              "request_too_large",
+              "too_many_token_filters",
+              "unauthorized",
+              "unknown_field",
+              "unsupported_as_of",
+              "unsupported_asset",
+              "unsupported_network",
+              "unsupported_quote_currency",
+              "upstream_provider_error",
+              "upstream_provider_timeout",
+              "window_too_large"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "EvmAddress": {
+        "type": "string",
+        "pattern": "^0x[0-9a-fA-F]{40}$"
+      }
+    }
+  }
+}

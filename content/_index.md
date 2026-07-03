@@ -1,7 +1,7 @@
 +++
-title = "Compliance evidence layer for crypto teams"
+title = "Source-aware evidence for on-chain activity"
 template = "index.html"
-description = "Iron Burrow helps crypto operators, compliance teams, and internal tools inspect on-chain activity with source-aware, deterministic evidence."
+description = "Source-aware, deterministic compliance evidence for crypto operators, compliance teams, and internal tools."
 +++
 
-Iron Burrow helps crypto operators, compliance teams, and internal tools inspect on-chain activity with source-aware, deterministic evidence.
+Iron Burrow helps crypto operators, compliance teams, and internal tools inspect balances and ERC-20 transfers with deterministic, source-aware evidence.
